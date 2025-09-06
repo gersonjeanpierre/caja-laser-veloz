@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { DexieService } from './dexie-service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('caja-laser-veloz');
+  protected readonly title = signal('Caja Laser Veloz');
+  dexieService = inject(DexieService);
+  constructor() {
+    // Forzar inicialización de la base de datos
+    this.dexieService.galleries.count();
+  }
+
 }
