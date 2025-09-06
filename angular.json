@@ -59,7 +59,11 @@
               "buildTarget": "caja-laser-veloz:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "host": "127.0.0.1",
+            "port": 8080
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"

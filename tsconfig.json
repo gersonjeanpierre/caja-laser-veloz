@@ -13,7 +13,26 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@features/*": [
+        "src/app/features/*"
+      ],
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@env/*": [
+        "src/app/env/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/primeng"
+    ],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
