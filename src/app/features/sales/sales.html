@@ -1,0 +1,86 @@
+<div class="p-3">
+  <h1 class="text-2xl font-bold">Tickets</h1>
+  <p>Gestión y visualización de Tickets</p>
+</div>
+<div class="mt-5 mx-4">
+  <p-table [value]="sales" #psales>
+    <ng-template #caption>
+      <div class="flex w-full justify-between items-center">
+        <p-button
+          label="Nuevo Ticket"
+          icon="pi pi-plus"
+          class="p-button-sm"
+          (click)="createNewTicket()"
+        />
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="psales.filterGlobal($event.target.value, 'contains')"
+            placeholder="Search keyword"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="id">Correlativo <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="designer">Diseñador <p-sortIcon field="designer"></p-sortIcon></th>
+        <th pSortableColumn="paymentMethod">
+          M.Pago <p-sortIcon field="paymentMethod"></p-sortIcon>
+        </th>
+        <th pSortableColumn="advance">Adelanto <p-sortIcon field="advance"></p-sortIcon></th>
+        <th pSortableColumn="balance">Saldo <p-sortIcon field="balance"></p-sortIcon></th>
+        <th pSortableColumn="total">Total <p-sortIcon field="total"></p-sortIcon></th>
+        <th pSortableColumn="client">Cliente <p-sortIcon field="client"></p-sortIcon></th>
+        <th pSortableColumn="status">Estados<p-sortIcon field="status"></p-sortIcon></th>
+        <th pSortableColumn="date">Hora <p-sortIcon field="date"></p-sortIcon></th>
+        <th pSortableColumn="actions">Acciones <p-sortIcon field="actions"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-sale>
+      <tr>
+        <td>{{ sale.correlative }}</td>
+        <td>{{ sale.designerId }}</td>
+        <td>{{ sale.paymentMethod }}</td>
+        <td>{{ sale.advancePayment | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
+        <td>{{ sale.saleValue | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
+        <td>{{ sale.totalAmount | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
+        <td>{{ sale.phone }}</td>
+        <td>
+          <div>Producto: {{ sale.statusProduct }}</div>
+          <div>Venta: {{ sale.statusSale }}</div>
+        </td>
+        <td>{{ sale.createdAt | date: 'short' }}</td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success p-button-sm mr-2"
+            (click)="editTicket(sale)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-sm"
+            (click)="deleteTicket(sale)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog
+    header="Nuevo Ticket"
+    [(visible)]="ticketDialog"
+    [modal]="true"
+    [style]="{ width: '650px' }"
+  >
+    <crud-form
+      [form]="ticketForm"
+      [fields]="ticketFields"
+      (save)="saveClient()"
+      (cancel)="hideDialog()"
+    />
+  </p-dialog>
+</div>
