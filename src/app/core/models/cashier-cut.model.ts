@@ -1,5 +1,5 @@
 // Asegúrate de importar tus interfaces si están en archivos separados
-import { Order } from "./order.model";
+import { Sale } from "./sale.model";
 
 export interface CashierCut {
   id?: string; // UUID
@@ -18,5 +18,5 @@ export interface CashierCut {
   }[];
   notes?: string; // Observaciones del cajero
   status: 'OPEN' | 'CLOSED'; // Indica si la caja está abierta o cerrada
-  orders: Order[]; // Lista de órdenes procesadas durante este corte
+  orders: Sale[]; // Lista de órdenes procesadas durante este corte
 }

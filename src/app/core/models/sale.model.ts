@@ -1,14 +1,16 @@
-export interface Order {
+export interface Sale {
   id?: string;
   correlative: number;
   cashierId: string;
   designerId: string;
   createdAt: Date;
-  updateAt: Date;
+  updateAt?: Date;
   paymentMethod: string;
   customerId: string;
+  phone?: string;
   items?: any[];
-  status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
+  statusProduct: string;
+  statusSale: string;
   notes?: string;
   generateInvoice: boolean;
   isIgv: boolean;
