@@ -12,41 +12,66 @@
           <span class="laser-veloz">VELOZ</span>
         </div>
       </div>
-      <h1 class="flex text-xl justify-center mt-2 mb-4">Inicio de Sesión</h1>
       <div class="flex flex-col items-center justify-center gap-3">
-        <div class="flex flex-col gap-2 w-full">
-          <p-iftalabel>
-            <input
-              formControlName="fullName"
-              pInputText
-              id="fullName"
-              type="text"
-              autocomplete="off"
-              class="w-full"
-            />
-            <label for="fullName">Nombre del Cajero(a)</label>
-          </p-iftalabel>
-        </div>
-
-        <div class="flex flex-col gap-2 w-full">
+        @if (isListCashiers) {
+          <p-button
+            label="Agregar Nuevo Cajero"
+            icon="pi pi-user"
+            (click)="toggleAddCashier()"
+            styleClass="w-full mt-3"
+          />
           <p-select
-            [options]="groupedGalleries"
-            placeholder="Selecciona el Stand"
-            [group]="true"
+            [options]="cashiersList"
+            [optionLabel]="'fullName'"
+            [optionValue]="'id'"
+            placeholder="Selecciona un Cajero"
+            formControlName="fullName"
             class="w-full"
-            formControlName="standId"
-          >
-            <ng-template let-group #group>
-              <div class="flex items-center">
-                <span>{{ group.label }}</span>
-              </div>
-            </ng-template>
-          </p-select>
-        </div>
-        <div class="flex flex-col gap-2 w-full">
-          <p-button label="Ingresar" icon="pi pi-user" (click)="loginUser()" styleClass="w-full" />
-        </div>
+            (onChange)="onCashierSelect($event.value)"
+          ></p-select>
+        } @else {
+          <h1 class="flex text-xl justify-center mt-3 mb-2">Inicio de Sesión</h1>
+          <div class="flex flex-col gap-2 w-full">
+            <p-iftalabel>
+              <input
+                formControlName="fullName"
+                pInputText
+                id="fullName"
+                type="text"
+                autocomplete="off"
+                class="w-full"
+              />
+              <label for="fullName">Nombre del Cajero(a)</label>
+            </p-iftalabel>
+          </div>
+          <div class="flex flex-col gap-2 w-full">
+            <p-select
+              [options]="groupedGalleries"
+              placeholder="Selecciona el Stand"
+              [group]="true"
+              class="w-full"
+              formControlName="standId"
+            >
+              <ng-template let-group #group>
+                <div class="flex items-center">
+                  <span>{{ group.label }}</span>
+                </div>
+              </ng-template>
+            </p-select>
+          </div>
+        }
+      </div>
+      <div class="flex flex-col gap-2 w-full mt-3">
+        <p-button label="Ingresar" icon="pi pi-user" (click)="loginUser()" styleClass="w-full" />
       </div>
     </form>
+  </p-card>
+  <p-card class="mt-3 w-80">
+    <div class="flex flex-col items-center justify-center gap-2">
+      <span class="text-sm">Desarrollado por</span>
+      <a href="https://jaluk.com" target="_blank" class="text-blue-600 hover:underline font-bold"
+        >Jaluk Technologies</a
+      >
+    </div>
   </p-card>
 </div>

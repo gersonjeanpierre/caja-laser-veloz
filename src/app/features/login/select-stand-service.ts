@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { DexieService } from 'src/app/dexie-service';
+import { DexieService } from '@shared/idb-dexiejs/dexie-service';
 
 @Injectable({
   providedIn: 'root'
