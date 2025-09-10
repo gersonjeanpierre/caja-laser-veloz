@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { Login } from './features/login/login';
 import { Layout } from '@features/layout/layout';
 import { Cashier } from '@features/cashier/cashier';
+import { Sales } from '@features/sales/sales';
+import { Dashboard } from '@features/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -18,9 +20,17 @@ export const routes: Routes = [
     component: Layout,
     children: [
       {
-        path: 'cashier',
+        path: 'dashboard',
+        component: Dashboard
+      },
+      {
+        path: 'ventas',
+        component: Sales
+      },
+      {
+        path: 'cortes-de-caja',
         component: Cashier
-      }
+      },
     ]
   }
 ];

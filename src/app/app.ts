@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DexieService } from './dexie-service';
+import { DexieService } from './shared/idb-dexiejs/dexie-service';
 
 @Component({
   selector: 'app-root',
