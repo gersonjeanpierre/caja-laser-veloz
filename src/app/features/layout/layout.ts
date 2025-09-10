@@ -1,12 +1,48 @@
-import { Component } from '@angular/core';
-import { Cashier } from '@features/cashier/cashier';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { Menubar } from "primeng/menubar";
+import { Panel } from 'primeng/panel';
+import { LogoLaserVeloz } from "@shared/components/logo-laser-veloz/logo-laser-veloz";
+import { MenuItem } from 'primeng/api';
+import { Ripple } from "primeng/ripple";
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
-  imports: [Cashier],
   templateUrl: './layout.html',
-  styleUrl: './layout.css'
+  styleUrl: './layout.css',
+  imports: [
+    Panel,
+    LogoLaserVeloz,
+    CommonModule,
+    Ripple,
+    RouterModule,
+    RouterOutlet
+  ],
 })
 export class Layout {
 
+  router = inject(Router)
+  private cdr = inject(ChangeDetectorRef);
+  cashierFullName: string = '';
+  cashier: [] = [];
+  items: MenuItem[] = [];
+
+  ngOnInit() {
+    this.getLocalStorageCashier();
+    this.cdr.detectChanges();
+    this.items = [
+      { label: 'Dashboard', icon: 'pi-fw pi-home', routerLink: '/dashboard' },
+      { label: 'Ventas', icon: 'pi-shopping-cart', routerLink: '/ventas' },
+      { label: 'Cortes de Caja', icon: 'pi-money-bill', routerLink: '/cortes-de-caja' },
+      { label: 'Cerrar Sesión', icon: 'pi-fw pi-sign-out', routerLink: '/login' }
+    ]
+  }
+
+  getLocalStorageCashier() {
+    const cashierStr = localStorage.getItem('selectedCashier');
+    const cashier = cashierStr ? JSON.parse(cashierStr) : null;
+    this.cashier = cashier;
+    this.cashierFullName = cashier ? cashier.fullName : '';
+  }
 }

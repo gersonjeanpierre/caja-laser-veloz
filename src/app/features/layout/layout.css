@@ -1,0 +1,49 @@
+:host ::ng-deep .p-panel {
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+:host ::ng-deep .p-menubar {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  justify-items: center;
+}
+
+:host ::ng-deep .p-menubar-list {
+  width: 100%;
+
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+:host ::ng-deep .p-menubar-item {
+  border-radius: 0.3rem;
+  width: 100%;
+}
+
+.active-menu-item {
+  background-color: #09090b;
+  color: white;
+  border-radius: 0.3rem;
+  width: 100%;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+:host ::ng-deep .sidebar-panel .p-panel-content {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+:host ::ng-deep .content-panel .p-panel-content {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
