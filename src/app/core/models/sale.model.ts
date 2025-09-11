@@ -1,6 +1,7 @@
 export interface Sale {
   id?: string;
   correlative: number;
+  standId: string;
   cashierId: string;
   designerId: string;
   createdAt: Date;

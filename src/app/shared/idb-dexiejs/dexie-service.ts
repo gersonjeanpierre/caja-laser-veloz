@@ -5,6 +5,7 @@ import { Gallery, Stand, ICashier, CashierCut, Sale } from '@core/models/index';
 import Dexie, { EntityTable } from 'dexie';
 import { galleriesSeed } from './seeds/galleries.seed';
 import { standsSeed } from './seeds/stands.seed';
+import { designersSeed } from './seeds/designers.seed';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class DexieService extends Dexie {
       sales: 'id, correlative, cashierId, designerId, customerId, status, paymentMethod',
       cashier: 'id, fullName',
       cashierCuts: 'id, cashierId, openingTime, closingTime, status',
-      designers: 'id, fullName, isActive',
+      designers: 'id, name, isActive',
       customers: 'id, fullName, dni, ruc, phone, email, isActive',
     });
 
@@ -40,5 +41,9 @@ export class DexieService extends Dexie {
       await this.stands.bulkAdd(standsSeed)
     }
 
+    const designerCount = await this.designers.count();
+    if (designerCount === 0) {
+      await this.designers.bulkAdd(designersSeed);
+    }
   }
 }

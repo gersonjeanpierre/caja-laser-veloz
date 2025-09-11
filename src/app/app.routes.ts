@@ -4,6 +4,7 @@ import { Layout } from '@features/layout/layout';
 import { Cashier } from '@features/cashier/cashier';
 import { Sales } from '@features/sales/sales';
 import { Dashboard } from '@features/dashboard/dashboard';
+import { Designer } from '@features/designer/designer';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,10 @@ export const routes: Routes = [
         path: 'cortes-de-caja',
         component: Cashier
       },
+      {
+        path: 'diseñadores',
+        component: Designer
+      }
     ]
   }
 ];

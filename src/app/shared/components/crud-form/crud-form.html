@@ -3,8 +3,9 @@
     @for (field of fields; track $index) {
       @if (
         field.type !== 'selectbutton' &&
-        field.type !== 'select-enum' &&
+        field.type !== 'select-icon' &&
         field.type !== 'select-group' &&
+        field.type !== 'select-options' &&
         field.type !== 'date-time'
       ) {
         <p-iftalabel>
@@ -29,7 +30,7 @@
           />
         </div>
       }
-      @if (field.type === 'select-enum') {
+      @if (field.type === 'select-options') {
         <p-iftalabel [class]="field.class">
           <p-select
             [options]="field.options"
@@ -38,6 +39,35 @@
             optionValue="value"
             class="w-full"
           />
+          <label for="dd-{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
+      }
+      @if (field.type === 'select-icon') {
+        <p-iftalabel [class]="field.class">
+          <p-select
+            [options]="field.options"
+            formControlName="{{ field.name }}"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          >
+            <ng-template let-option pTemplate="item">
+              <div class="flex items-center gap-2">
+                @if (option.image) {
+                  <img [src]="option.image" alt="" class="w-5 h-5 object-contain" />
+                }
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+            <ng-template let-option pTemplate="selectedItem">
+              <div class="flex items-center gap-2">
+                @if (option?.image) {
+                  <img [src]="option.image" alt="" class="w-5 h-5 object-contain" />
+                }
+                <span>{{ option?.label }}</span>
+              </div>
+            </ng-template>
+          </p-select>
           <label for="dd-{{ field.name }}">{{ field.label }}</label>
         </p-iftalabel>
       }

@@ -8,9 +8,15 @@ import { v7 as uuidv7 } from 'uuid';
 })
 export class SalesService {
   private saleService = inject(DexieService).sales;
+  private designerService = inject(DexieService).designers;
+  private standService = inject(DexieService).stands;
 
   createNewTicket(sale: Sale) {
-    const saleWithId = { ...sale, id: uuidv7() };
+    const saleWithId = {
+      ...sale,
+      id: uuidv7()
+    };
+
     return this.saleService.add(saleWithId);
   }
 
