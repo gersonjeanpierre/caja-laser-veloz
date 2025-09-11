@@ -8,8 +8,6 @@ import { v7 as uuidv7 } from 'uuid';
 })
 export class SalesService {
   private saleService = inject(DexieService).sales;
-  private designerService = inject(DexieService).designers;
-  private standService = inject(DexieService).stands;
 
   createNewTicket(sale: Sale) {
     const saleWithId = {

@@ -6,7 +6,9 @@
         field.type !== 'select-icon' &&
         field.type !== 'select-group' &&
         field.type !== 'select-options' &&
-        field.type !== 'date-time'
+        field.type !== 'select' &&
+        field.type !== 'date-time' &&
+        field.type !== 'checkbox'
       ) {
         <p-iftalabel>
           <input
@@ -29,6 +31,19 @@
             optionValue="value"
           />
         </div>
+      }
+      @if (field.type === 'select') {
+        <p-iftalabel [class]="field.class">
+          <p-select
+            [options]="field.options"
+            [formControlName]="field.name"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+            placeholder="Selecciona una opción"
+          />
+          <label [for]="field.name">{{ field.label }}</label>
+        </p-iftalabel>
       }
       @if (field.type === 'select-options') {
         <p-iftalabel [class]="field.class">
@@ -105,6 +120,12 @@
           ></p-datepicker>
           <label for="{{ field.name }}">{{ field.label }}</label>
         </p-iftalabel>
+      }
+      @if (field.type === 'checkbox') {
+        <div class="flex items-center gap-2" [ngClass]="field.class">
+          <p-checkbox [formControlName]="field.name" [binary]="true" [inputId]="field.name" />
+          <label [for]="field.name">{{ field.label }}</label>
+        </div>
       }
     }
   </div>

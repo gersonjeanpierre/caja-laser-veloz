@@ -35,6 +35,7 @@ export class Layout {
       { label: 'Dashboard', icon: 'pi-fw pi-home', routerLink: '/dashboard' },
       { label: 'Ventas', icon: 'pi-shopping-cart', routerLink: '/ventas' },
       { label: 'Cortes de Caja', icon: 'pi-money-bill', routerLink: '/cortes-de-caja' },
+      { label: 'Clientes', icon: 'pi-fw pi-users', routerLink: '/clientes' },
       { label: 'Diseñadores', icon: 'pi-fw pi-pencil', routerLink: '/diseñadores' },
       { label: 'Cerrar Sesión', icon: 'pi-fw pi-sign-out', routerLink: '/login' },
     ]

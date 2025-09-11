@@ -1,11 +1,13 @@
 import { Input, Output, EventEmitter, Component } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 import { IftaLabelModule } from "primeng/iftalabel";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'crud-form',
@@ -14,12 +16,14 @@ import { DatePickerModule } from 'primeng/datepicker';
   imports: [
     ReactiveFormsModule,
     FormsModule,
+    NgClass,
     IftaLabelModule,
     ButtonModule,
     InputTextModule,
     SelectButtonModule,
     SelectModule,
     DatePickerModule,
+    CheckboxModule,
   ]
 })
 export class CrudForm {

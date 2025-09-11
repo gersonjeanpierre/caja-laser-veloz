@@ -1,0 +1,109 @@
+<div class="p-3">
+  <h1 class="text-2xl font-bold">Clientes</h1>
+  <p>Gestión y visualización de Clientes</p>
+</div>
+<div class="mt-5 mx-4">
+  <p-table [value]="customers" #pcustomers size="small" [loading]="loading">
+    <ng-template pTemplate="caption">
+      <div class="flex w-full justify-between items-center">
+        <p-button
+          label="Nuevo Cliente"
+          icon="pi pi-plus"
+          class="p-button-sm"
+          (click)="createNewCustomer()"
+        />
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="pcustomers.filterGlobal($event.target.value, 'contains')"
+            placeholder="Buscar cliente..."
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="fullName">Nombre/R.S.<p-sortIcon field="fullName"></p-sortIcon></th>
+        <th pSortableColumn="typePerson">
+          Tipo Persona <p-sortIcon field="typePerson"></p-sortIcon>
+        </th>
+        <th pSortableColumn="typeClient">
+          Tipo Cliente <p-sortIcon field="typeClient"></p-sortIcon>
+        </th>
+        <th pSortableColumn="phone">Celular <p-sortIcon field="phone"></p-sortIcon></th>
+        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+        <th pSortableColumn="dni">DNI <p-sortIcon field="dni"></p-sortIcon></th>
+        <th pSortableColumn="ruc">RUC <p-sortIcon field="ruc"></p-sortIcon></th>
+        <th pSortableColumn="isActive">Estado <p-sortIcon field="isActive"></p-sortIcon></th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-customer>
+      <tr>
+        <td>
+          @if (customer.typePerson === 'Jurídica') {
+            <span class="font-bold">{{ customer.socialReason }}</span>
+            @if (customer.fullName) {
+              <br />
+              <span class="text-sm font-light">Representante:</span>
+              <br />
+              <span class="text-sm font-medium">{{ customer.fullName }}</span>
+            }
+          } @else if (customer.typePerson === 'Natural') {
+            <span class="font-bold">{{ customer.fullName }}</span>
+            @if (customer.socialReason) {
+              <br />
+              <span class="text-sm font-light">Razón Social:</span>
+              <br />
+              <span class="text-sm font-medium">{{ customer.socialReason }}</span>
+            }
+          }
+        </td>
+        <td>{{ customer.typePerson }}</td>
+        <td>{{ customer.typeClient }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.dni }}</td>
+        <td>{{ customer.ruc }}</td>
+        <td>
+          @if (customer.isActive) {
+            <span class="text-green-600 font-bold">Activo</span>
+          } @else {
+            <span class="text-red-500 font-medium">Inactivo</span>
+          }
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success p-button-sm mr-2"
+            (click)="editCustomer(customer)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-sm"
+            (click)="deleteCustomer(customer)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    header="Cliente"
+    [(visible)]="customerDialog"
+    [modal]="true"
+    [style]="{ width: '950px', height: 'auto' }"
+  >
+    <crud-form
+      [form]="customerForm"
+      [fields]="customerFields"
+      (save)="saveCustomer()"
+      (cancel)="hideDialog()"
+    />
+  </p-dialog>
+</div>
+<app-message-toast #toast></app-message-toast>
