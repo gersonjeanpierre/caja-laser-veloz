@@ -8,6 +8,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputMaskModule } from 'primeng/inputmask';
 
 @Component({
   selector: 'crud-form',
@@ -24,6 +25,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     SelectModule,
     DatePickerModule,
     CheckboxModule,
+    InputMaskModule
   ]
 })
 export class CrudForm {
@@ -33,6 +35,7 @@ export class CrudForm {
     label: string;
     type?: string;
     class?: string;
+    placeholder?: string;
     options?: { label: string; value: any; }[];
     optionsSelect?: {
       label: string,

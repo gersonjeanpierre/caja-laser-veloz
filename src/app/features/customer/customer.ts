@@ -41,9 +41,9 @@ export class Customer {
 
   customerForm: FormGroup = this.fb.group({
     id: '',
-    typePerson: '',
-    typeClient: '',
-    phone: '',
+    typePerson: ['', Validators.required],
+    typeClient: ['', Validators.required],
+    phone: ['', [Validators.pattern(/^\+\d{1,4}\s?\d{6,15}$/), Validators.required]],
     fullName: '',
     socialReason: '',
     dni: ['', [Validators.minLength(8), Validators.maxLength(8)]],
@@ -152,7 +152,7 @@ export class Customer {
       { name: 'socialReason', label: 'Razón Social', type: 'text', class: 'p-fluid' },
 
       // Fila 4: Contacto (celular y email, medio ancho cada uno)
-      { name: 'phone', label: 'Celular', type: 'text', class: 'w-52' },
+      { name: 'phone', label: 'Celular', type: 'tel', class: 'w-52', placeholder: '+51 987654321' },
       { name: 'email', label: 'Email', type: 'email', class: 'w-52' },
 
       // Fila 5: Documentos (DNI y CE en fila, RUC en fila siguiente para claridad)
@@ -233,10 +233,20 @@ export class Customer {
   }
 
   private errorMessages: Record<string, Record<string, string>> = {
+    typePerson: {
+      required: 'El tipo de persona es obligatorio.'
+    },
+    typeClient: {
+      required: 'El tipo de cliente es obligatorio.'
+    },
     ruc: {
       required: 'El RUC es obligatorio.',
       minlength: 'El RUC debe tener exactamente 11 dígitos.',
       maxlength: 'El RUC debe tener exactamente 11 dígitos.',
+    },
+    phone: {
+      required: 'El celular es obligatorio.',
+      pattern: 'El número debe tener formato internacional, ej: +51 999999999.'
     },
     dni: {
       required: 'El DNI es obligatorio.',
@@ -251,7 +261,7 @@ export class Customer {
     email: {
       required: 'El correo es obligatorio.',
       email: 'El correo no es válido.',
-    }
+    },
   };
 
   private getFirstErrorMessage(): string | null {
