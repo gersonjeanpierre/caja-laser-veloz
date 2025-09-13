@@ -8,7 +8,9 @@
         field.type !== 'select-options' &&
         field.type !== 'select' &&
         field.type !== 'date-time' &&
-        field.type !== 'checkbox'
+        field.type !== 'checkbox' &&
+        field.type !== 'textarea' &&
+        field.type !== 'tel'
       ) {
         <p-iftalabel>
           <input
@@ -126,6 +128,33 @@
           <p-checkbox [formControlName]="field.name" [binary]="true" [inputId]="field.name" />
           <label [for]="field.name">{{ field.label }}</label>
         </div>
+      }
+      @if (field.type === 'textarea') {
+        <p-iftalabel [class]="field.class">
+          <textarea
+            pInputTextarea
+            [id]="field.name"
+            [class]="field.class"
+            [formControlName]="field.name"
+            rows="4"
+            cols="30"
+            autoResize
+          ></textarea>
+          <label for="{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
+      }
+      @if (field.type === 'tel') {
+        <p-iftalabel>
+          <input
+            pInputText
+            [id]="field.name"
+            [class]="field.class"
+            type="tel"
+            [formControlName]="field.name"
+            [placeholder]="field.placeholder || ''"
+          />
+          <label for="{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
       }
     }
   </div>

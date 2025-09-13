@@ -9,5 +9,5 @@ export interface Customer {
   ruc?: string | null;
   ce?: string | null;
   email?: string | null;
-  isActive: boolean;
+  isActive?: boolean;
 }

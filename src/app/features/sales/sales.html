@@ -66,7 +66,14 @@
         <td>{{ sale.advancePayment | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
         <td>{{ sale.saleValue | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
         <td>{{ sale.totalAmount | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
-        <td>{{ sale.phone }}</td>
+        <td>
+          <p-button
+            icon="pi pi-whatsapp"
+            class="p-button-rounded p-button-success p-button-sm mr-2"
+            (click)="openWhatsApp(sale.phone)"
+          />
+          {{ sale.phone }}
+        </td>
         <td>
           <div>Producto: {{ sale.statusProduct }}</div>
           <div>Venta: {{ sale.statusSale }}</div>
@@ -101,4 +108,15 @@
     />
   </p-dialog>
 </div>
+<p-dialog
+  header="Buscar o Agregar Cliente"
+  [(visible)]="customerDialog"
+  [modal]="true"
+  [style]="{ width: '1250px', height: '600px' }"
+>
+  <app-customer
+    (customerSelected)="onCustomerSelected($event)"
+    (addNewCustomer)="openAddCustomerDialog()"
+  ></app-customer>
+</p-dialog>
 <app-message-toast #toast></app-message-toast>
