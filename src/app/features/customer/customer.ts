@@ -53,9 +53,9 @@ export class Customer {
     isActive: true,
   })
 
-  @Output() customerSelected = new EventEmitter<Customer>();
+  @Output() customerSelected = new EventEmitter<CustomerModel>();
 
-  selectCustomer(customer: Customer) {
+  selectCustomer(customer: CustomerModel) {
     this.customerSelected.emit(customer);
   }
 

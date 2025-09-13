@@ -41,7 +41,6 @@ export class Sales {
 
   private salesService = inject(SalesService);
   private designerService = inject(DexieService).designers;
-  private router = inject(Router);
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
@@ -102,6 +101,7 @@ export class Sales {
   createNewTicket() {
     this.ticketForm.reset();
     this.ticketDialog = true;
+    this.openCustomerDialog(); // <-- Agrega esta línea para abrir el diálogo de cliente
   }
 
   saveClient() {
@@ -162,7 +162,7 @@ export class Sales {
       { name: 'advancePayment', label: 'Pago Adelantado', type: 'number', class: 'p-fluid' },
       { name: 'saleValue', label: 'Saldo', type: 'number', class: 'p-fluid' },
       { name: 'totalAmount', label: 'Total', type: 'number', class: 'p-fluid' },
-      { name: 'customerId', label: 'ClienteId', type: 'text', class: 'p-fluid' },
+      // { name: 'customerId', label: 'ClienteId', type: 'text', class: 'p-fluid' },
       { name: 'phone', label: 'ClientePhone', type: 'text', class: 'p-fluid' },
       { name: 'statusProduct', label: 'Estado del Producto', type: 'text', class: 'p-fluid' },
       { name: 'statusSale', label: 'Estado de la Venta', type: 'text', class: 'p-fluid' },
@@ -215,5 +215,10 @@ export class Sales {
 
   openAddCustomerDialog() {
     this.addCustomerDialog = true;
+  }
+
+  openWhatsApp(phone: string) {
+    const whatsappUrl = `https://wa.me/${phone}`;
+    window.open(whatsappUrl, '_blank');
   }
 }
