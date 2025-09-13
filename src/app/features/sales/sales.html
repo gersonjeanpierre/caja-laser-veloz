@@ -101,4 +101,15 @@
     />
   </p-dialog>
 </div>
+<p-dialog
+  header="Buscar o Agregar Cliente"
+  [(visible)]="customerDialog"
+  [modal]="true"
+  [style]="{ width: '700px' }"
+>
+  <app-customer
+    (customerSelected)="onCustomerSelected($event)"
+    (addNewCustomer)="openAddCustomerDialog()"
+  ></app-customer>
+</p-dialog>
 <app-message-toast #toast></app-message-toast>

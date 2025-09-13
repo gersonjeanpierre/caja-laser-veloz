@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Output, ViewChild } from '@angular/core';
 import { Customer as CustomerModel } from '@core/models/customer.model';
 import { CustomerService } from './services/customer-service';
 import { Router } from '@angular/router';
@@ -52,6 +52,12 @@ export class Customer {
     email: ['', [Validators.email]],
     isActive: true,
   })
+
+  @Output() customerSelected = new EventEmitter<Customer>();
+
+  selectCustomer(customer: Customer) {
+    this.customerSelected.emit(customer);
+  }
 
   @ViewChild('toast') toast!: MessageToast;
 

@@ -16,6 +16,8 @@ import { paymentMethods } from '@shared/select-options/sales/payment-method.sele
 import { DexieService } from '@shared/idb-dexiejs/dexie-service';
 import { ISelectPrimeNG } from '@core/interface/select-primeng.interface';
 import { Designer } from '@core/models/designer.model';
+import { Customer as CustomerModel } from '@core/models/customer.model';
+import { Customer } from '@features/customer/customer';
 
 @Component({
   selector: 'app-sales',
@@ -31,7 +33,8 @@ import { Designer } from '@core/models/designer.model';
     InputTextModule,
     CrudForm,
     Dialog,
-    MessageToast
+    MessageToast,
+    Customer
   ],
 })
 export class Sales {
@@ -159,7 +162,8 @@ export class Sales {
       { name: 'advancePayment', label: 'Pago Adelantado', type: 'number', class: 'p-fluid' },
       { name: 'saleValue', label: 'Saldo', type: 'number', class: 'p-fluid' },
       { name: 'totalAmount', label: 'Total', type: 'number', class: 'p-fluid' },
-      { name: 'phone', label: 'Cliente', type: 'text', class: 'p-fluid' },
+      { name: 'customerId', label: 'ClienteId', type: 'text', class: 'p-fluid' },
+      { name: 'phone', label: 'ClientePhone', type: 'text', class: 'p-fluid' },
       { name: 'statusProduct', label: 'Estado del Producto', type: 'text', class: 'p-fluid' },
       { name: 'statusSale', label: 'Estado de la Venta', type: 'text', class: 'p-fluid' },
       { name: 'createdAt', label: 'Hora', type: 'date-time', class: 'w-48' },
@@ -192,5 +196,24 @@ export class Sales {
 
   hideDialog() {
     this.ticketDialog = false;
+  }
+
+  customerDialog = false;
+  selectedCustomer: CustomerModel | null = null;
+
+  openCustomerDialog() {
+    this.customerDialog = true;
+  }
+
+  onCustomerSelected(customer: CustomerModel) {
+    this.selectedCustomer = customer;
+    this.ticketForm.patchValue({ customerId: customer.id, phone: customer.phone });
+    this.customerDialog = false;
+  }
+
+  addCustomerDialog = false;
+
+  openAddCustomerDialog() {
+    this.addCustomerDialog = true;
   }
 }
