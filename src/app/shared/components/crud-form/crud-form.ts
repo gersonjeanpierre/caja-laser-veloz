@@ -1,6 +1,6 @@
 import { Input, Output, EventEmitter, Component } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { IftaLabelModule } from "primeng/iftalabel";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from 'primeng/inputtext';
@@ -25,11 +25,13 @@ import { InputMaskModule } from 'primeng/inputmask';
     SelectModule,
     DatePickerModule,
     CheckboxModule,
-    InputMaskModule
+    InputMaskModule,
+    NgTemplateOutlet
   ]
 })
 export class CrudForm {
   @Input() form!: FormGroup;
+  @Input() formName?: string;
   @Input() fields: {
     name: string;
     label: string;

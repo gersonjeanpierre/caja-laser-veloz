@@ -1,165 +1,179 @@
-<form [formGroup]="form" class="flex flex-col min-h-80">
-  <div class="flex flex-wrap gap-4">
-    @for (field of fields; track $index) {
-      @if (
-        field.type !== 'selectbutton' &&
-        field.type !== 'select-icon' &&
-        field.type !== 'select-group' &&
-        field.type !== 'select-options' &&
-        field.type !== 'select' &&
-        field.type !== 'date-time' &&
-        field.type !== 'checkbox' &&
-        field.type !== 'textarea' &&
-        field.type !== 'tel'
-      ) {
-        <p-iftalabel>
-          <input
-            pInputText
-            [id]="field.name"
-            [class]="field.class"
-            [type]="field.type || 'text'"
-            [formControlName]="field.name"
-          />
-          <label for="{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'selectbutton') {
-        <div class="flex items-center gap-3">
-          <label for="{{ field.name }}">Activo</label>
-          <p-selectbutton
-            [options]="field.options"
-            formControlName="{{ field.name }}"
-            optionLabel="label"
-            optionValue="value"
-          />
-        </div>
-      }
-      @if (field.type === 'select') {
-        <p-iftalabel [class]="field.class">
-          <p-select
-            [options]="field.options"
-            [formControlName]="field.name"
-            optionLabel="label"
-            optionValue="value"
-            class="w-full"
-            placeholder="Selecciona una opción"
-          />
-          <label [for]="field.name">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'select-options') {
-        <p-iftalabel [class]="field.class">
-          <p-select
-            [options]="field.options"
-            formControlName="{{ field.name }}"
-            optionLabel="label"
-            optionValue="value"
-            class="w-full"
-          />
-          <label for="dd-{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'select-icon') {
-        <p-iftalabel [class]="field.class">
-          <p-select
-            [options]="field.options"
-            formControlName="{{ field.name }}"
-            optionLabel="label"
-            optionValue="value"
-            class="w-full"
-          >
-            <ng-template let-option pTemplate="item">
-              <div class="flex items-center gap-2">
-                @if (option.image) {
-                  <img [src]="option.image" alt="" class="w-5 h-5 object-contain" />
-                }
-                <span>{{ option.label }}</span>
-              </div>
-            </ng-template>
-            <ng-template let-option pTemplate="selectedItem">
-              <div class="flex items-center gap-2">
-                @if (option?.image) {
-                  <img [src]="option.image" alt="" class="w-5 h-5 object-contain" />
-                }
-                <span>{{ option?.label }}</span>
-              </div>
-            </ng-template>
-          </p-select>
-          <label for="dd-{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'select-group') {
-        <p-iftalabel [class]="field.class">
-          <p-select
-            [options]="field.optionsSelect"
-            [group]="true"
-            formControlName="{{ field.name }}"
-            placeholder="Selecciona el Stand"
-            optionLabel="label"
-            optionValue="value"
-            inputId="{{ field.name }}"
-            class="w-full"
-          >
-            <ng-template let-group #group>
-              <div class="flex items-center">
-                <span>{{ group.label }}</span>
-              </div>
-            </ng-template>
-          </p-select>
-          <label for="{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'date-time') {
-        <p-iftalabel [class]="field.class">
-          <p-datepicker
-            id="{{ field.name }}"
-            formControlName="{{ field.name }}"
-            class="w-full"
-            dateFormat="dd/mm/yy"
-            [showTime]="true"
-            timeOnly="true"
-            hourFormat="24"
-          ></p-datepicker>
-          <label for="{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'checkbox') {
-        <div class="flex items-center gap-2" [ngClass]="field.class">
-          <p-checkbox [formControlName]="field.name" [binary]="true" [inputId]="field.name" />
-          <label [for]="field.name">{{ field.label }}</label>
-        </div>
-      }
-      @if (field.type === 'textarea') {
-        <p-iftalabel [class]="field.class">
-          <textarea
-            pInputTextarea
-            [id]="field.name"
-            [class]="field.class"
-            [formControlName]="field.name"
-            rows="4"
-            cols="30"
-            autoResize
-          ></textarea>
-          <label for="{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
-      @if (field.type === 'tel') {
-        <p-iftalabel>
-          <input
-            pInputText
-            [id]="field.name"
-            [class]="field.class"
-            type="tel"
-            [formControlName]="field.name"
-            [placeholder]="field.placeholder || ''"
-          />
-          <label for="{{ field.name }}">{{ field.label }}</label>
-        </p-iftalabel>
-      }
+<form [formGroup]="form" class="flex flex-col gap-4">
+  <!-- Agrupación personalizada por filas -->
+  <!-- Primera fila: 3 campos -->
+  <div class="grid grid-cols-3 gap-4">
+    @for (field of fields.slice(0, 3); track $index) {
+      <ng-container *ngTemplateOutlet="fieldTemplate; context: { $implicit: field }"></ng-container>
     }
   </div>
+  <!-- Segunda fila: 4 campos -->
+  <div class="grid grid-cols-4 gap-4">
+    @for (field of fields.slice(3, 7); track $index) {
+      <ng-container *ngTemplateOutlet="fieldTemplate; context: { $implicit: field }"></ng-container>
+    }
+  </div>
+  <!-- Tercera fila: 3 campos -->
+  <div class="grid grid-cols-3 gap-4">
+    @for (field of fields.slice(7, 10); track $index) {
+      <ng-container *ngTemplateOutlet="fieldTemplate; context: { $implicit: field }"></ng-container>
+    }
+  </div>
+  <!-- Cuarta fila: 1 campo (full width) -->
+  <div class="w-full">
+    @for (field of fields.slice(10, 11); track $index) {
+      <ng-container *ngTemplateOutlet="fieldTemplate; context: { $implicit: field }"></ng-container>
+    }
+  </div>
+
   <div class="flex gap-2 mt-4">
     <p-button label="Cancelar" icon="pi pi-times" text (click)="cancel.emit()" />
     <p-button label="Guardar" icon="pi pi-check" (click)="save.emit()" />
   </div>
+
+  <!-- Template para renderizar cada field -->
+  <ng-template #fieldTemplate let-field>
+    @if (
+      field.type !== 'selectbutton' &&
+      field.type !== 'select-icon' &&
+      field.type !== 'select-group' &&
+      field.type !== 'select-options' &&
+      field.type !== 'select' &&
+      field.type !== 'date-time' &&
+      field.type !== 'checkbox' &&
+      field.type !== 'textarea' &&
+      field.type !== 'tel'
+    ) {
+      <p-iftalabel [class]="field.class">
+        <input
+          pInputText
+          [id]="field.name"
+          [type]="field.type || 'text'"
+          [formControlName]="field.name"
+        />
+        <label for="{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'select') {
+      <p-iftalabel [class]="field.class">
+        <p-select
+          [options]="field.options"
+          [formControlName]="field.name"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+          placeholder="Selecciona una opción"
+        />
+        <label [for]="field.name">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'select-options') {
+      <p-iftalabel [class]="field.class">
+        <p-select
+          [options]="field.options"
+          formControlName="{{ field.name }}"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        />
+        <label for="dd-{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'select-icon') {
+      <p-iftalabel [class]="field.class">
+        <p-select
+          [options]="field.options"
+          formControlName="{{ field.name }}"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        >
+          <ng-template let-option pTemplate="item">
+            <div class="flex items-center gap-2">
+              @if (option.image) {
+                <img [src]="option.image" alt="" class="w-5 h-5 object-contain" />
+              }
+              <span>{{ option.label }}</span>
+            </div>
+          </ng-template>
+          <ng-template let-option pTemplate="selectedItem">
+            <div class="flex items-center gap-2">
+              @if (option?.image) {
+                <img [src]="option.image" alt="" class="w-5 h-5 object-contain" />
+              }
+              <span>{{ option?.label }}</span>
+            </div>
+          </ng-template>
+        </p-select>
+        <label for="dd-{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'select-group') {
+      <p-iftalabel [class]="field.class">
+        <p-select
+          [options]="field.optionsSelect"
+          [group]="true"
+          formControlName="{{ field.name }}"
+          placeholder="Selecciona el Stand"
+          optionLabel="label"
+          optionValue="value"
+          inputId="{{ field.name }}"
+          class="w-full"
+        >
+          <ng-template let-group #group>
+            <div class="flex items-center">
+              <span>{{ group.label }}</span>
+            </div>
+          </ng-template>
+        </p-select>
+        <label for="{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'date-time') {
+      <p-iftalabel [class]="field.class">
+        <p-datepicker
+          id="{{ field.name }}"
+          formControlName="{{ field.name }}"
+          class="w-full"
+          dateFormat="dd/mm/yy"
+          [showTime]="true"
+          timeOnly="true"
+          hourFormat="24"
+        ></p-datepicker>
+        <label for="{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'checkbox') {
+      <div class="flex items-center gap-2" [ngClass]="field.class">
+        <p-checkbox [formControlName]="field.name" [binary]="true" [inputId]="field.name" />
+        <label [for]="field.name">{{ field.label }}</label>
+      </div>
+    }
+    @if (field.type === 'textarea') {
+      <p-iftalabel [class]="field.class">
+        <textarea
+          pInputTextarea
+          [id]="field.name"
+          [class]="field.class"
+          [formControlName]="field.name"
+          rows="4"
+          cols="30"
+          autoResize
+        ></textarea>
+        <label for="{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+    @if (field.type === 'tel') {
+      <p-iftalabel>
+        <input
+          pInputText
+          [id]="field.name"
+          [class]="field.class"
+          type="tel"
+          [formControlName]="field.name"
+          [placeholder]="field.placeholder || ''"
+        />
+        <label for="{{ field.name }}">{{ field.label }}</label>
+      </p-iftalabel>
+    }
+  </ng-template>
 </form>

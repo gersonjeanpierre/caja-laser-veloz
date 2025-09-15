@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, inject, signal, ViewChild } from '@angular/core';
 import { ICashier, Sale } from '@core/models';
 import { SalesService } from './services/sales-service';
-import { Router } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -18,6 +17,8 @@ import { ISelectPrimeNG } from '@core/interface/select-primeng.interface';
 import { Designer } from '@core/models/designer.model';
 import { Customer as CustomerModel } from '@core/models/customer.model';
 import { Customer } from '@features/customer/customer';
+import { saleStatusOptions } from '@shared/select-options/sales/sale-status.select';
+import { productStatusOptions } from '@shared/select-options/sales/product-status.select';
 
 @Component({
   selector: 'app-sales',
@@ -38,7 +39,6 @@ import { Customer } from '@features/customer/customer';
   ],
 })
 export class Sales {
-
   private salesService = inject(SalesService);
   private designerService = inject(DexieService).designers;
   private fb = inject(FormBuilder);
@@ -47,9 +47,11 @@ export class Sales {
   sales: Sale[] = [];
   loading: boolean = true;
   ticketDialog: boolean = false;
-  selectDesigners: ISelectPrimeNG[] = [];
   designers = signal<Designer[]>([]);
+  selectDesigners: ISelectPrimeNG[] = [];
   paymentMethods = paymentMethods;
+  productStatusOptions = productStatusOptions;
+  saleStatusOptions = saleStatusOptions;
 
   ticketForm: FormGroup = this.fb.group({
     id: '',
@@ -101,7 +103,7 @@ export class Sales {
   createNewTicket() {
     this.ticketForm.reset();
     this.ticketDialog = true;
-    this.openCustomerDialog(); // <-- Agrega esta línea para abrir el diálogo de cliente
+    // this.openCustomerDialog();
   }
 
   saveClient() {
@@ -135,7 +137,6 @@ export class Sales {
     this.hideDialog();
   }
 
-
   editTicket(sale: Sale) {
     this.ticketForm.patchValue(sale);
     this.ticketDialog = true;
@@ -156,17 +157,20 @@ export class Sales {
 
   get ticketFields() {
     return [
-      { name: 'correlative', label: 'Correlativo', type: 'number', class: 'p-fluid' },
-      { name: 'paymentMethod', label: 'Método de Pago', type: 'select-icon', class: 'w-52', options: this.paymentMethods },
+      // 3 columns
+      { name: 'correlative', label: 'Correlativo', type: 'number', class: 'w-32' },
       { name: 'designerId', label: 'Diseñador ID', type: 'select-options', class: 'w-52', options: this.selectDesigners },
-      { name: 'advancePayment', label: 'Pago Adelantado', type: 'number', class: 'p-fluid' },
-      { name: 'saleValue', label: 'Saldo', type: 'number', class: 'p-fluid' },
-      { name: 'totalAmount', label: 'Total', type: 'number', class: 'p-fluid' },
-      // { name: 'customerId', label: 'ClienteId', type: 'text', class: 'p-fluid' },
-      { name: 'phone', label: 'ClientePhone', type: 'text', class: 'p-fluid' },
-      { name: 'statusProduct', label: 'Estado del Producto', type: 'text', class: 'p-fluid' },
-      { name: 'statusSale', label: 'Estado de la Venta', type: 'text', class: 'p-fluid' },
-      { name: 'createdAt', label: 'Hora', type: 'date-time', class: 'w-48' },
+      { name: 'createdAt', label: 'Hora', type: 'date-time', class: 'w-24' },
+      // 4 columns
+      { name: 'advancePayment', label: 'Adelanto', type: 'number', class: 'w-28' },
+      { name: 'saleValue', label: 'Saldo', type: 'number', class: 'w-28' },
+      { name: 'totalAmount', label: 'Total', type: 'number', class: 'w-28' },
+      { name: 'paymentMethod', label: 'Método de Pago', type: 'select-icon', class: 'w-52', options: this.paymentMethods },
+      // 3 columns
+      { name: 'statusProduct', label: 'Estado del Producto', type: 'select-options', class: 'w-40', options: this.productStatusOptions },
+      { name: 'statusSale', label: 'Estado de la Venta', type: 'select-options', class: 'w-40', options: this.saleStatusOptions },
+      { name: 'phone', label: 'Teléfono', type: 'text', class: 'w-40' },
+      // full width
       { name: 'notes', label: 'Notas', type: 'text', class: 'p-fluid' },
     ]
   }
