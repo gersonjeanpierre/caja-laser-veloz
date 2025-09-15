@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { SelectStandService } from './select-stand-service';
 import { ICashier } from '@core/models';
 import { CashierService } from '../cashier/services/cashier-service';
+import { LogoLaserVeloz } from '@shared/components/logo-laser-veloz/logo-laser-veloz';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ import { CashierService } from '../cashier/services/cashier-service';
     IftaLabelModule,
     SelectModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LogoLaserVeloz
   ]
 })
 export class Login implements OnInit {
@@ -39,6 +41,7 @@ export class Login implements OnInit {
 
   isListCashiers = false;
   addCashier = false;
+  laserFontSize = 'laser-font-size';
 
   loginForm = this.fb.group({
     id: '',
