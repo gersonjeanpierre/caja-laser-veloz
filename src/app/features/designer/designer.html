@@ -1,1 +1,84 @@
-<p>designer works!</p>
+<div class="p-3">
+  <h1 class="text-2xl font-bold">Diseñadores</h1>
+  <p>Gestión y visualización de Diseñadores</p>
+</div>
+<div class="mt-5 mx-4">
+  <p-table [value]="designers" #pdesigners size="small" [loading]="loading">
+    <ng-template pTemplate="caption">
+      <div class="flex w-full justify-between items-center">
+        <p-button
+          label="Nuevo Diseñador(a)"
+          icon="pi pi-plus"
+          class="p-button-sm"
+          (click)="createNewDesigner()"
+        />
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="pdesigners.filterGlobal($event.target.value, 'contains')"
+            placeholder="Buscar diseñador(a)..."
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Nombre<p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="fullName">
+          Nombre Completo<p-sortIcon field="fullName"></p-sortIcon>
+        </th>
+        <th>StandId</th>
+        <th pSortableColumn="isActive">Estado<p-sortIcon field="isActive"></p-sortIcon></th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-designer>
+      <tr>
+        <td>{{ designer.name }}</td>
+        <td>{{ designer.fullName }}</td>
+        <td>{{ designer.standId }}</td>
+        <td>
+          @if (designer.isActive) {
+            <span class="text-green-600 font-bold">Activo</span>
+          } @else {
+            <span class="text-red-500 font-medium">Inactivo</span>
+          }
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success p-button-sm mr-2"
+            (click)="editDesigner(designer)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-sm"
+            (click)="deleteDesigner(designer)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    header="Diseñador(a)"
+    [(visible)]="designerDialog"
+    [modal]="true"
+    [style]="{ width: '800px', height: 'auto' }"
+  >
+    <crud-form
+      [form]="designerForm"
+      [fields]="designerFields"
+      [columns]="4"
+      [columnSizes]="['160px', '160px', '180px', '180px']"
+      [rows]="4"
+      (save)="saveDesigner()"
+      (cancel)="hideDialog()"
+    />
+  </p-dialog>
+</div>
+<app-message-toast #toast></app-message-toast>

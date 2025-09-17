@@ -5,13 +5,7 @@
 <div class="flex flex-col justify-center h-screen items-center">
   <p-card class="w-80">
     <form [formGroup]="loginForm">
-      <div class="laser-container">
-        <div class="laser">
-          <span>LASER</span>
-          <span class="laser-color">COLOR</span>
-          <span class="laser-veloz">VELOZ</span>
-        </div>
-      </div>
+      <app-logo-laser-veloz [className]="laserFontSize" />
       <div class="flex flex-col items-center justify-center gap-3">
         @if (isListCashiers) {
           <p-button

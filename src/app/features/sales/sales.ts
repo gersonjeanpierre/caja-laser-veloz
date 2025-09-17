@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, inject, signal, ViewChild } from '@angular/core';
 import { ICashier, Sale } from '@core/models';
 import { SalesService } from './services/sales-service';
-import { Router } from '@angular/router';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -18,6 +17,8 @@ import { ISelectPrimeNG } from '@core/interface/select-primeng.interface';
 import { Designer } from '@core/models/designer.model';
 import { Customer as CustomerModel } from '@core/models/customer.model';
 import { Customer } from '@features/customer/customer';
+import { saleStatusOptions } from '@shared/select-options/sales/sale-status.select';
+import { productStatusOptions } from '@shared/select-options/sales/product-status.select';
 
 @Component({
   selector: 'app-sales',
@@ -38,7 +39,6 @@ import { Customer } from '@features/customer/customer';
   ],
 })
 export class Sales {
-
   private salesService = inject(SalesService);
   private designerService = inject(DexieService).designers;
   private fb = inject(FormBuilder);
@@ -47,9 +47,11 @@ export class Sales {
   sales: Sale[] = [];
   loading: boolean = true;
   ticketDialog: boolean = false;
-  selectDesigners: ISelectPrimeNG[] = [];
   designers = signal<Designer[]>([]);
+  selectDesigners: ISelectPrimeNG[] = [];
   paymentMethods = paymentMethods;
+  productStatusOptions = productStatusOptions;
+  saleStatusOptions = saleStatusOptions;
 
   ticketForm: FormGroup = this.fb.group({
     id: '',
@@ -101,7 +103,7 @@ export class Sales {
   createNewTicket() {
     this.ticketForm.reset();
     this.ticketDialog = true;
-    this.openCustomerDialog(); // <-- Agrega esta línea para abrir el diálogo de cliente
+    this.openCustomerDialog();
   }
 
   saveClient() {
@@ -135,7 +137,6 @@ export class Sales {
     this.hideDialog();
   }
 
-
   editTicket(sale: Sale) {
     this.ticketForm.patchValue(sale);
     this.ticketDialog = true;
@@ -147,28 +148,11 @@ export class Sales {
     const designers = (await this.designerService.toArray()).map(
       (designer) => ({
         label: designer.name,
-        value: designer.id,
+        value: designer.id ?? '',
       })
     )
     this.designers.set(await this.designerService.toArray());
     this.selectDesigners = designers;
-  }
-
-  get ticketFields() {
-    return [
-      { name: 'correlative', label: 'Correlativo', type: 'number', class: 'p-fluid' },
-      { name: 'paymentMethod', label: 'Método de Pago', type: 'select-icon', class: 'w-52', options: this.paymentMethods },
-      { name: 'designerId', label: 'Diseñador ID', type: 'select-options', class: 'w-52', options: this.selectDesigners },
-      { name: 'advancePayment', label: 'Pago Adelantado', type: 'number', class: 'p-fluid' },
-      { name: 'saleValue', label: 'Saldo', type: 'number', class: 'p-fluid' },
-      { name: 'totalAmount', label: 'Total', type: 'number', class: 'p-fluid' },
-      // { name: 'customerId', label: 'ClienteId', type: 'text', class: 'p-fluid' },
-      { name: 'phone', label: 'ClientePhone', type: 'text', class: 'p-fluid' },
-      { name: 'statusProduct', label: 'Estado del Producto', type: 'text', class: 'p-fluid' },
-      { name: 'statusSale', label: 'Estado de la Venta', type: 'text', class: 'p-fluid' },
-      { name: 'createdAt', label: 'Hora', type: 'date-time', class: 'w-48' },
-      { name: 'notes', label: 'Notas', type: 'text', class: 'p-fluid' },
-    ]
   }
 
   showSuccess(message: string) {
@@ -220,5 +204,71 @@ export class Sales {
   openWhatsApp(phone: string) {
     const whatsappUrl = `https://wa.me/${phone}`;
     window.open(whatsappUrl, '_blank');
+  }
+
+  get ticketFields() {
+    return [
+      // Primera fila
+      {
+        name: 'correlative', label: 'Correlativo', type: 'correlative',
+        class: 'w-36',
+        colStart: 1, colEnd: 2, rowStart: 1, rowEnd: 2
+      },
+      {
+        name: 'designerId', label: 'Diseñador', type: 'select-options',
+        class: 'w-full', options: this.selectDesigners,
+        colStart: 2, colEnd: 4, rowStart: 1, rowEnd: 2
+      },
+
+      {
+        name: 'phone', label: 'Teléfono Cliente', type: 'tel',
+        class: 'w-56',
+        colStart: 4, colEnd: 5, rowStart: 1, rowEnd: 2
+      },
+
+      // Segunda fila
+      {
+        name: 'advancePayment', label: 'Adelanto', type: 'number',
+        class: 'w-36',
+        colStart: 1, colEnd: 2, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'saleValue', label: 'Saldo', type: 'number',
+        class: 'w-40',
+        colStart: 2, colEnd: 3, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'totalAmount', label: 'Total', type: 'number',
+        class: 'w-40',
+        colStart: 3, colEnd: 4, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'paymentMethod', label: 'Método de Pago', type: 'select-icon',
+        class: 'w-56', options: this.paymentMethods,
+        colStart: 4, colEnd: 5, rowStart: 2, rowEnd: 3
+      },
+      // Tercera fila
+      {
+        name: 'statusProduct', label: 'Estado Producto', type: 'select-options',
+        class: 'w-36', options: this.productStatusOptions,
+        colStart: 1, colEnd: 2, rowStart: 3, rowEnd: 4
+      },
+      {
+        name: 'statusSale', label: 'Estado Venta', type: 'select-options',
+        class: 'w-40', options: this.saleStatusOptions,
+        colStart: 2, colEnd: 3, rowStart: 3, rowEnd: 4
+      },
+      {
+        name: 'createdAt', label: 'Hora', type: 'date-time',
+        class: 'w-40',
+        colStart: 3, colEnd: 4, rowStart: 3, rowEnd: 4
+      },
+      // Notas ocupa dos columnas
+      {
+        name: 'notes', label: 'Notas', type: 'textarea',
+        class: 'w-full p-fluid',
+        colStart: 1, colEnd: 5, rowStart: 4, rowEnd: 5
+      },
+    ];
   }
 }

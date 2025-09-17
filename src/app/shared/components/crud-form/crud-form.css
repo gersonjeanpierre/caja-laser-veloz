@@ -1,0 +1,7 @@
+:host ::ng-deep .p-inputnumber-input {
+  width: inherit;
+}
+
+:host ::ng-deep .p-select-list-container {
+  width: inherit;
+}

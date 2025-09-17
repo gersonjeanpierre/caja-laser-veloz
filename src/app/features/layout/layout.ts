@@ -27,6 +27,8 @@ export class Layout {
   cashierFullName: string = '';
   cashier: [] = [];
   items: MenuItem[] = [];
+  emSize = 'em-size';
+
 
   ngOnInit() {
     this.getLocalStorageCashier();
