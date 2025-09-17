@@ -148,7 +148,7 @@ export class Sales {
     const designers = (await this.designerService.toArray()).map(
       (designer) => ({
         label: designer.name,
-        value: designer.id,
+        value: designer.id ?? '',
       })
     )
     this.designers.set(await this.designerService.toArray());

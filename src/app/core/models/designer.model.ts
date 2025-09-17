@@ -1,6 +1,7 @@
 export interface Designer {
-  id: string;
+  id?: string;
   name: string;
   fullName: string;
-  isActive: boolean;
+  isActive?: boolean;
+  standId?: string;
 }
