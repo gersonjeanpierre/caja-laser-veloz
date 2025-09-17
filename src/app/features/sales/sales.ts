@@ -103,7 +103,7 @@ export class Sales {
   createNewTicket() {
     this.ticketForm.reset();
     this.ticketDialog = true;
-    // this.openCustomerDialog();
+    this.openCustomerDialog();
   }
 
   saveClient() {
@@ -155,26 +155,6 @@ export class Sales {
     this.selectDesigners = designers;
   }
 
-  get ticketFields() {
-    return [
-      // 3 columns
-      { name: 'correlative', label: 'Correlativo', type: 'number', class: 'w-32' },
-      { name: 'designerId', label: 'Diseñador ID', type: 'select-options', class: 'w-52', options: this.selectDesigners },
-      { name: 'createdAt', label: 'Hora', type: 'date-time', class: 'w-24' },
-      // 4 columns
-      { name: 'advancePayment', label: 'Adelanto', type: 'number', class: 'w-28' },
-      { name: 'saleValue', label: 'Saldo', type: 'number', class: 'w-28' },
-      { name: 'totalAmount', label: 'Total', type: 'number', class: 'w-28' },
-      { name: 'paymentMethod', label: 'Método de Pago', type: 'select-icon', class: 'w-52', options: this.paymentMethods },
-      // 3 columns
-      { name: 'statusProduct', label: 'Estado del Producto', type: 'select-options', class: 'w-40', options: this.productStatusOptions },
-      { name: 'statusSale', label: 'Estado de la Venta', type: 'select-options', class: 'w-40', options: this.saleStatusOptions },
-      { name: 'phone', label: 'Teléfono', type: 'text', class: 'w-40' },
-      // full width
-      { name: 'notes', label: 'Notas', type: 'text', class: 'p-fluid' },
-    ]
-  }
-
   showSuccess(message: string) {
     this.toast.clear();
     this.toast.severity = 'success';
@@ -224,5 +204,71 @@ export class Sales {
   openWhatsApp(phone: string) {
     const whatsappUrl = `https://wa.me/${phone}`;
     window.open(whatsappUrl, '_blank');
+  }
+
+  get ticketFields() {
+    return [
+      // Primera fila
+      {
+        name: 'correlative', label: 'Correlativo', type: 'correlative',
+        class: 'w-36',
+        colStart: 1, colEnd: 2, rowStart: 1, rowEnd: 2
+      },
+      {
+        name: 'designerId', label: 'Diseñador', type: 'select-options',
+        class: 'w-full', options: this.selectDesigners,
+        colStart: 2, colEnd: 4, rowStart: 1, rowEnd: 2
+      },
+
+      {
+        name: 'phone', label: 'Teléfono Cliente', type: 'tel',
+        class: 'w-56',
+        colStart: 4, colEnd: 5, rowStart: 1, rowEnd: 2
+      },
+
+      // Segunda fila
+      {
+        name: 'advancePayment', label: 'Adelanto', type: 'number',
+        class: 'w-36',
+        colStart: 1, colEnd: 2, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'saleValue', label: 'Saldo', type: 'number',
+        class: 'w-40',
+        colStart: 2, colEnd: 3, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'totalAmount', label: 'Total', type: 'number',
+        class: 'w-40',
+        colStart: 3, colEnd: 4, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'paymentMethod', label: 'Método de Pago', type: 'select-icon',
+        class: 'w-56', options: this.paymentMethods,
+        colStart: 4, colEnd: 5, rowStart: 2, rowEnd: 3
+      },
+      // Tercera fila
+      {
+        name: 'statusProduct', label: 'Estado Producto', type: 'select-options',
+        class: 'w-36', options: this.productStatusOptions,
+        colStart: 1, colEnd: 2, rowStart: 3, rowEnd: 4
+      },
+      {
+        name: 'statusSale', label: 'Estado Venta', type: 'select-options',
+        class: 'w-40', options: this.saleStatusOptions,
+        colStart: 2, colEnd: 3, rowStart: 3, rowEnd: 4
+      },
+      {
+        name: 'createdAt', label: 'Hora', type: 'date-time',
+        class: 'w-40',
+        colStart: 3, colEnd: 4, rowStart: 3, rowEnd: 4
+      },
+      // Notas ocupa dos columnas
+      {
+        name: 'notes', label: 'Notas', type: 'textarea',
+        class: 'w-full p-fluid',
+        colStart: 1, colEnd: 5, rowStart: 4, rowEnd: 5
+      },
+    ];
   }
 }

@@ -98,11 +98,14 @@
     header="Nuevo Ticket"
     [(visible)]="ticketDialog"
     [modal]="true"
-    [style]="{ width: '700px' }"
+    [style]="{ width: '800px' }"
   >
     <crud-form
       [form]="ticketForm"
       [fields]="ticketFields"
+      [columns]="4"
+      [columnSizes]="['144px', '160px', '160px', '224px']"
+      [rows]="4"
       (save)="saveClient()"
       (cancel)="hideDialog()"
     />
