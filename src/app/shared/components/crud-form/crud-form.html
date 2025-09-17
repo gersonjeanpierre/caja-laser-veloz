@@ -65,6 +65,19 @@
           <label for="{{ field.name }}">{{ field.label }}</label>
         </p-iftalabel>
       }
+      @if (field.type === 'text' || field.type === 'email') {
+        <p-iftalabel>
+          <input
+            [class]="field.class"
+            pInputText
+            [id]="field.name"
+            [type]="field.type"
+            [formControlName]="field.name"
+            [placeholder]="field.placeholder || ''"
+          />
+          <label for="{{ field.name }}">{{ field.label }}</label>
+        </p-iftalabel>
+      }
       @if (field.type === 'select') {
         <p-iftalabel>
           <p-select
