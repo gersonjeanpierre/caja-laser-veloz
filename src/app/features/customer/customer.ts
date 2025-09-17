@@ -133,44 +133,6 @@ export class Customer {
     }
   }
 
-  get customerFields() {
-    return [
-      // Fila 1: Tipos de persona y cliente (medio ancho cada uno, relacionados)
-      {
-        name: 'typePerson', label: 'Tipo de Persona', type: 'select', class: 'w-52', options: [
-          { label: 'Natural', value: 'Natural' },
-          { label: 'Jurídica', value: 'Jurídica' }
-        ]
-      },
-      {
-        name: 'typeClient', label: 'Tipo de Cliente', type: 'select', class: 'w-52', options: [
-          { label: 'Nuevo', value: 'Nuevo' },
-          { label: 'Frecuente', value: 'Frecuente' },
-          { label: 'Imprentero', value: 'Imprentero' },
-          { label: 'Imprentero Frecuente', value: 'Frecuente' }
-        ]
-      },
-
-      // Fila 2: Nombre completo (ancho completo, campo principal)
-      { name: 'fullName', label: 'Nombre Completo', type: 'text', class: 'p-fluid' },
-
-      // Fila 3: Razón social (ancho completo, solo para jurídicos, pero visible siempre)
-      { name: 'socialReason', label: 'Razón Social', type: 'text', class: 'p-fluid' },
-
-      // Fila 4: Contacto (celular y email, medio ancho cada uno)
-      { name: 'phone', label: 'Celular', type: 'tel', class: 'w-52', placeholder: '+51 987654321' },
-      { name: 'email', label: 'Email', type: 'email', class: 'w-52' },
-
-      // Fila 5: Documentos (DNI y CE en fila, RUC en fila siguiente para claridad)
-      { name: 'dni', label: 'DNI', type: 'text', class: 'w-52' },
-      { name: 'ce', label: 'CE', type: 'text', class: 'w-52' },
-      { name: 'ruc', label: 'RUC', type: 'text', class: 'p-fluid' },
-
-      // Fila 6: Estado (checkbox al final, alineado a la izquierda)
-      { name: 'isActive', label: 'Activo', type: 'checkbox', class: 'w-full' },
-    ];
-  }
-
   showSuccess(message: string) {
     this.toast.clear();
     this.toast.severity = 'success';
@@ -285,4 +247,75 @@ export class Customer {
     }
     return null;
   }
+
+  get customerFields() {
+    return [
+      // Primera fila
+      {
+        name: 'typePerson', label: 'Tipo de Persona', type: 'select',
+        class: 'w-full',
+        colStart: 1, colEnd: 2, rowStart: 1, rowEnd: 2,
+        options: [
+          { label: 'Natural', value: 'NATURAL' },
+          { label: 'Jurídica', value: 'JURIDICA' }
+        ]
+      },
+      {
+        name: 'typeClient', label: 'Tipo de Cliente', type: 'select',
+        class: 'w-full',
+        colStart: 2, colEnd: 4, rowStart: 1, rowEnd: 2,
+        options: [
+          { label: 'Nuevo', value: 'NUEVO' },
+          { label: 'Frecuente', value: 'FRECUENTE' },
+          { label: 'Imprentero', value: 'IMPRENTERO' },
+          { label: 'Imprentero Frecuente', value: 'IMPRENTERO_FRECUENTE' }
+        ]
+      },
+      {
+        name: 'phone', label: 'Celular', type: 'tel',
+        class: 'w-full', placeholder: '+51 987654321',
+        colStart: 4, colEnd: 5, rowStart: 1, rowEnd: 2
+      },
+      // Segunda fila
+      {
+        name: 'fullName', label: 'Nombre Completo', type: 'text',
+        class: 'w-full',
+        colStart: 1, colEnd: 3, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'dni', label: 'DNI', type: 'text',
+        class: 'w-full',
+        colStart: 3, colEnd: 4, rowStart: 2, rowEnd: 3
+      },
+      {
+        name: 'ce', label: 'CE', type: 'text',
+        class: 'w-full',
+        colStart: 4, colEnd: 5, rowStart: 2, rowEnd: 3
+      },
+      // Tercera fila
+      {
+        name: 'socialReason', label: 'Razón Social', type: 'text',
+        class: 'w-full',
+        colStart: 1, colEnd: 3, rowStart: 3, rowEnd: 4
+      },
+      {
+        name: 'ruc', label: 'RUC', type: 'text',
+        class: 'w-full',
+        colStart: 3, colEnd: 4, rowStart: 3, rowEnd: 4
+      },
+      // Cuarta fila
+
+      {
+        name: 'email', label: 'Email', type: 'email',
+        class: 'w-full',
+        colStart: 1, colEnd: 3, rowStart: 4, rowEnd: 5
+      },
+      {
+        name: 'isActive', label: 'Activo', type: 'checkbox',
+        class: 'w-full',
+        colStart: 3, colEnd: 4, rowStart: 4, rowEnd: 5
+      },
+    ];
+  }
+
 }
