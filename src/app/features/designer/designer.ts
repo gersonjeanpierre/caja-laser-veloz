@@ -27,7 +27,7 @@ import { SelectStandService } from '@features/login/select-stand-service';
     CrudForm,
     Dialog,
     MessageToast
-  ],
+  ]
 })
 export class Designer {
   private designerService = inject(DesignerService);
@@ -46,7 +46,8 @@ export class Designer {
     name: ['', Validators.required],
     fullName: ['', Validators.required],
     isActive: true,
-    standId: ''
+    standId: '',
+    standName: '',
   });
 
   @ViewChild('toast') toast!: MessageToast;
@@ -85,6 +86,9 @@ export class Designer {
       this.showError(errorMsg || 'Por favor, completa todos los campos requeridos correctamente.');
       return;
     }
+    this.selectStandService.getStandById(designer.standId || '').then(result => {
+      designer.standName = result?.name || '';
+    });
     if (!designer.id || designer.id === '') {
       this.designerService.createDesigner(designer)
         .then(() => {
@@ -95,6 +99,7 @@ export class Designer {
           this.showError(error.message || 'Error al agregar el diseñador(a)');
         });
     } else {
+
       this.designerService.updateDesigner(designer.id, designer)
         .then(() => {
           this.loadDesigners();
@@ -175,6 +180,14 @@ export class Designer {
       }
     }
     return null;
+  }
+
+  globalFilterValue(pdesigners: any): string {
+    const filter = pdesigners?.filters?.['global'];
+    if (Array.isArray(filter)) {
+      return filter[0]?.value ?? '';
+    }
+    return filter?.value ?? '';
   }
 
   get designerFields() {

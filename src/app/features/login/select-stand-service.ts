@@ -25,6 +25,6 @@ export class SelectStandService {
   }
 
   async getStandById(standId: string) {
-    return this.stands.get(standId);
+    return await this.stands.get(standId);
   }
 }
