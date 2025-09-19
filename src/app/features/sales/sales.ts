@@ -19,6 +19,7 @@ import { Customer as CustomerModel } from '@core/models/customer.model';
 import { Customer } from '@features/customer/customer';
 import { saleStatusOptions } from '@shared/select-options/sales/sale-status.select';
 import { productStatusOptions } from '@shared/select-options/sales/product-status.select';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-sales',
@@ -35,7 +36,8 @@ import { productStatusOptions } from '@shared/select-options/sales/product-statu
     CrudForm,
     Dialog,
     MessageToast,
-    Customer
+    Customer,
+    TagModule
   ],
 })
 export class Sales {
@@ -52,6 +54,8 @@ export class Sales {
   paymentMethods = paymentMethods;
   productStatusOptions = productStatusOptions;
   saleStatusOptions = saleStatusOptions;
+  showCustomerSelector: boolean = false;
+
 
   ticketForm: FormGroup = this.fb.group({
     id: '',
@@ -59,6 +63,7 @@ export class Sales {
     standId: '',
     cashierId: '',
     designerId: '',
+    designerName: '',
     createdAt: new Date(),
     updateAt: new Date(),
     paymentMethod: '',
@@ -76,12 +81,12 @@ export class Sales {
     saleValue: 0,
     igv: 0,
     totalAmount: 0,
+    isActive: true,
   })
 
   @ViewChild('toast') toast!: MessageToast;
 
   async ngOnInit() {
-    // this.ticketFields;
     this.loadSales();
     await this.selectOptionDesigner();
     this.cdr.detectChanges();
@@ -90,8 +95,8 @@ export class Sales {
   async loadSales() {
     this.loading = true;
     try {
-      this.sales = await this.salesService.getSales();
-      console.log('Sales loaded:', this.sales);
+      this.allSales = await this.salesService.getSales();
+      this.filterSales();
       this.cdr.detectChanges();
     } catch (error) {
       console.error('Error loading sales:', error);
@@ -99,6 +104,22 @@ export class Sales {
       this.loading = false;
     }
   }
+
+  filterSales() {
+    if (this.showAllSales) {
+      this.sales = this.allSales;
+    } else {
+      this.sales = this.allSales.filter(sale => sale.isActive !== false);
+    }
+  }
+
+  onShowAllSalesChange(event: any) {
+    this.showAllSales = event.target.checked;
+    this.filterSales();
+  }
+
+  showAllSales: boolean = false;
+  allSales: Sale[] = [];
 
   createNewTicket() {
     this.ticketForm.reset();
@@ -111,8 +132,10 @@ export class Sales {
     const cashier: ICashier = JSON.parse(localStorage.getItem('selectedCashier') || '{}');
     ticket.cashierId = cashier.id || '';
     ticket.standId = cashier.standId || '';
+    ticket.designerName = this.designers().find(d => d.id === ticket.designerId)?.name || '';
 
     if (!ticket.id || ticket.id === '') {
+      ticket.isActive = true;
       this.salesService.createNewTicket(ticket)
         .then(() => {
           // this.loadSales();
@@ -142,7 +165,18 @@ export class Sales {
     this.ticketDialog = true;
   }
 
-  deleteTicket(sale: Sale) { }
+  deleteTicket(sale: Sale) {
+    // implementar el delete logico
+    sale.isActive = false;
+    this.salesService.updateSale(sale.id || '', sale)
+      .then(() => {
+        this.loadSales();
+        this.showSuccess('Ticket eliminado exitosamente');
+      })
+      .catch(error => {
+        this.showError(error.message || 'Error al eliminar el ticket');
+      });
+  }
 
   async selectOptionDesigner() {
     const designers = (await this.designerService.toArray()).map(
@@ -204,6 +238,47 @@ export class Sales {
   openWhatsApp(phone: string) {
     const whatsappUrl = `https://wa.me/${phone}`;
     window.open(whatsappUrl, '_blank');
+  }
+
+  copyPhoneToClipboard(phone: string) {
+    navigator.clipboard.writeText(phone).then(() => {
+      this.showSuccess('Número de teléfono copiado al portapapeles');
+    }).catch(err => {
+      this.showError('Error al copiar el número de teléfono: ' + err);
+    });
+  }
+
+  globalFilterValue(psales: any): string {
+    const filter = psales?.filters?.['global'];
+    if (Array.isArray(filter)) {
+      return filter[0]?.value ?? '';
+    }
+    return filter?.value ?? '';
+  }
+
+  getProductStatusSeverity(status: string): string {
+    switch (status) {
+      case 'ENPROCESO':
+        return 'info';
+      case 'LISTO':
+        return 'warn';
+      case 'ENTREGADO':
+        return 'success';
+      default:
+        return 'default';
+    }
+  }
+  getSaleStatusSeverity(status: string): string {
+    switch (status) {
+      case 'ADELANTO':
+        return 'info';
+      case 'PAGADO':
+        return 'warn';
+      case 'COMPLETADO':
+        return 'success';
+      default:
+        return 'default';
+    }
   }
 
   get ticketFields() {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { Customer as CustomerModel } from '@core/models/customer.model';
 import { CustomerService } from './services/customer-service';
 import { Router } from '@angular/router';
@@ -35,9 +35,12 @@ export class Customer {
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
+  @Input() showSelectButton: boolean = false;
+
   customers: CustomerModel[] = [];
   loading: boolean = true;
   customerDialog: boolean = false;
+
 
   customerForm: FormGroup = this.fb.group({
     id: '',

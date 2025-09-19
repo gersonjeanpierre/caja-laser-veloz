@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Customer } from '@core/models/customer.model';
-import { Designer } from '@core/models/designer.model';
-import { Gallery, Stand, ICashier, CashierCut, Sale } from '@core/models/index';
+import { Gallery, Stand, ICashier, CashierCut, Sale, Designer, Customer, PaymentModel } from '@core/models/index';
 import Dexie, { EntityTable } from 'dexie';
 import { galleriesSeed } from './seeds/galleries.seed';
 import { standsSeed } from './seeds/stands.seed';
@@ -18,6 +16,7 @@ export class DexieService extends Dexie {
   cashierCuts!: EntityTable<CashierCut, 'id'>;
   designers!: EntityTable<Designer, 'id'>;
   customers!: EntityTable<Customer, 'id'>;
+  payments!: EntityTable<PaymentModel, 'id'>;
 
   constructor() {
     super('CajaLaserVelozDB');
@@ -29,6 +28,7 @@ export class DexieService extends Dexie {
       cashierCuts: 'id, cashierId, openingTime, closingTime, status',
       designers: 'id, name, isActive',
       customers: 'id, fullName, dni, ruc, phone, email, isActive',
+      payments: 'id, saleId, amount, paymentMethod'
     });
 
     this.on('ready', () => this.seedData());

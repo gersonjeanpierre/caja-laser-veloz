@@ -4,4 +4,5 @@ export interface Designer {
   fullName: string;
   isActive?: boolean;
   standId?: string;
+  standName?: string;
 }

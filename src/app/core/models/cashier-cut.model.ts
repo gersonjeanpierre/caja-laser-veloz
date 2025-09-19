@@ -1,4 +1,3 @@
-// Asegúrate de importar tus interfaces si están en archivos separados
 import { Sale } from "./sale.model";
 
 export interface CashierCut {

@@ -3,13 +3,25 @@
   <p>Gestión y visualización de Diseñadores</p>
 </div>
 <div class="mt-5 mx-4">
-  <p-table [value]="designers" #pdesigners size="small" [loading]="loading">
+  <p-table
+    #pdesigners
+    [value]="designers"
+    [globalFilterFields]="['name', 'fullName', 'standName']"
+    selectionMode="single"
+    dataKey="designerId"
+    size="small"
+    [loading]="loading"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="5"
+    [paginator]="true"
+  >
     <ng-template pTemplate="caption">
       <div class="flex w-full justify-between items-center">
         <p-button
           label="Nuevo Diseñador(a)"
           icon="pi pi-plus"
-          class="p-button-sm"
+          class=""
+          rounded="true"
           (click)="createNewDesigner()"
         />
         <p-iconfield iconPosition="left">
@@ -19,6 +31,7 @@
           <input
             pInputText
             type="text"
+            [value]="this.globalFilterValue(pdesigners)"
             (input)="pdesigners.filterGlobal($event.target.value, 'contains')"
             placeholder="Buscar diseñador(a)..."
           />
@@ -31,7 +44,7 @@
         <th pSortableColumn="fullName">
           Nombre Completo<p-sortIcon field="fullName"></p-sortIcon>
         </th>
-        <th>StandId</th>
+        <th>StandName</th>
         <th pSortableColumn="isActive">Estado<p-sortIcon field="isActive"></p-sortIcon></th>
         <th>Acciones</th>
       </tr>
@@ -40,7 +53,7 @@
       <tr>
         <td>{{ designer.name }}</td>
         <td>{{ designer.fullName }}</td>
-        <td>{{ designer.standId }}</td>
+        <td>{{ designer.standName }}</td>
         <td>
           @if (designer.isActive) {
             <span class="text-green-600 font-bold">Activo</span>
@@ -51,12 +64,15 @@
         <td>
           <p-button
             icon="pi pi-pencil"
-            class="p-button-rounded p-button-success p-button-sm mr-2"
+            class=""
+            rounded="true"
             (click)="editDesigner(designer)"
           ></p-button>
           <p-button
             icon="pi pi-trash"
-            class="p-button-rounded p-button-danger p-button-sm"
+            class="ml-2"
+            rounded="true"
+            severity="danger"
             (click)="deleteDesigner(designer)"
           ></p-button>
         </td>

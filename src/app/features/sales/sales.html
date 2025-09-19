@@ -3,15 +3,48 @@
   <p>Gestión y visualización de Tickets</p>
 </div>
 <div class="mt-5 mx-4">
-  <p-table [value]="sales" #psales size="small">
+  <p-table
+    #psales
+    [value]="sales"
+    [globalFilterFields]="[
+      'correlative',
+      'designerName',
+      'paymentMethod',
+      'advancePayment',
+      'saleValue',
+      'totalAmount',
+      'saleSubtotal',
+      'statusSale',
+      'statusProduct',
+      'createdAt',
+    ]"
+    size="small"
+    selectionMode="single"
+    [loading]="loading"
+    dataKey="id"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="5"
+    [paginator]="true"
+    [columnResizeMode]="'fit'"
+  >
     <ng-template #caption>
       <div class="flex w-full justify-between items-center">
-        <p-button
-          label="Nuevo Ticket"
-          icon="pi pi-plus"
-          class="p-button-sm"
-          (click)="createNewTicket()"
-        />
+        <div class="flex items-center gap-3">
+          <p-button
+            label="Nuevo Ticket"
+            icon="pi pi-plus"
+            class="p-button-sm"
+            (click)="createNewTicket()"
+          />
+          <label class="flex items-center gap-1 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              [checked]="showAllSales"
+              (change)="onShowAllSalesChange($event)"
+            />
+            Mostrar todos
+          </label>
+        </div>
         <p-iconfield iconPosition="left">
           <p-inputicon>
             <i class="pi pi-search"></i>
@@ -19,8 +52,9 @@
           <input
             pInputText
             type="text"
+            [value]="this.globalFilterValue(psales)"
             (input)="psales.filterGlobal($event.target.value, 'contains')"
-            placeholder="Search keyword"
+            placeholder="Buscar ticket..."
           />
         </p-iconfield>
       </div>
@@ -42,14 +76,10 @@
       </tr>
     </ng-template>
     <ng-template #body let-sale>
-      <tr>
-        <td>{{ sale.correlative }}</td>
+      <tr [class.row-deleted]="!sale.isActive">
+        <td width="99px">{{ sale.correlative }}</td>
         <td>
-          @for (designer of this.designers(); track $index) {
-            @if (designer.id === sale.designerId) {
-              {{ designer.name }}
-            }
-          }
+          {{ sale.designerName }}
         </td>
         <td>
           @for (method of this.paymentMethods; track $index) {
@@ -67,27 +97,53 @@
         <td>{{ sale.saleValue | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
         <td>{{ sale.totalAmount | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
         <td>
-          <p-button
-            icon="pi pi-whatsapp"
-            class="p-button-rounded p-button-success p-button-sm mr-2"
-            (click)="openWhatsApp(sale.phone)"
-          />
-          {{ sale.phone }}
+          <div class="flex flex-col">
+            <div>{{ sale.phone }}</div>
+            <p-button
+              label="Copiar"
+              icon="pi pi-whatsapp"
+              size="small"
+              rounded="true"
+              severity="success"
+              (click)="copyPhoneToClipboard(sale.phone)"
+            />
+          </div>
         </td>
-        <td>
-          <div>Producto: {{ sale.statusProduct }}</div>
-          <div>Venta: {{ sale.statusSale }}</div>
+        <td class="flex flex-col gap-2">
+          <div>
+            <span class="font-semibold"> Producto: </span>
+            @if (sale.statusProduct) {
+              <p-tag
+                [value]="sale.statusProduct"
+                [severity]="getProductStatusSeverity(sale.statusProduct)"
+                rounded="true"
+              ></p-tag>
+            }
+          </div>
+          <div>
+            <span class="font-semibold"> Venta: </span>
+            @if (sale.statusSale) {
+              <p-tag
+                [value]="sale.statusSale"
+                [severity]="getSaleStatusSeverity(sale.statusSale)"
+                rounded="true"
+              ></p-tag>
+            }
+          </div>
         </td>
         <td>{{ sale.createdAt | date: 'short' }}</td>
         <td>
           <p-button
             icon="pi pi-pencil"
-            class="p-button-rounded p-button-success p-button-sm mr-2"
+            class="mr-2"
+            rounded="true"
             (click)="editTicket(sale)"
           ></p-button>
           <p-button
             icon="pi pi-trash"
-            class="p-button-rounded p-button-danger p-button-sm"
+            class=""
+            rounded="true"
+            severity="danger"
             (click)="deleteTicket(sale)"
           ></p-button>
         </td>
@@ -118,6 +174,7 @@
   [style]="{ width: '1250px', height: '600px' }"
 >
   <app-customer
+    [showSelectButton]="true"
     (customerSelected)="onCustomerSelected($event)"
     (addNewCustomer)="openAddCustomerDialog()"
   ></app-customer>
