@@ -1,3 +1,14 @@
 :host ::ng-deep .p-select-list-container {
   width: 210px;
 }
+
+:host ::ng-deep .p-tag {
+  border: 2px solid;
+}
+
+.row-deleted {
+  background-color: #f1d7da !important;
+  /* Color de fondo rojo claro */
+  color: #990000 !important;
+  /* Color de texto rojo oscuro */
+}

@@ -77,15 +77,24 @@
           }
         </td>
         <td>
-          <p-button (click)="selectCustomer(customer)" label="Seleccionar"></p-button>
+          @if (showSelectButton) {
+            <p-button
+              (click)="selectCustomer(customer)"
+              label="Seleccionar"
+              rounded="true"
+              class="mr-2"
+            />
+          }
           <p-button
             icon="pi pi-pencil"
-            class="p-button-rounded p-button-success p-button-sm mr-2"
+            class=""
+            rounded="true"
             (click)="editCustomer(customer)"
           ></p-button>
           <p-button
             icon="pi pi-trash"
-            class="p-button-rounded p-button-danger p-button-sm"
+            class="ml-2"
+            rounded="true"
             (click)="deleteCustomer(customer)"
           ></p-button>
         </td>

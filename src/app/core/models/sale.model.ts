@@ -4,6 +4,7 @@ export interface Sale {
   standId: string;
   cashierId: string;
   designerId: string;
+  designerName?: string;
   createdAt: Date;
   updateAt?: Date;
   paymentMethod: string;
@@ -21,4 +22,5 @@ export interface Sale {
   saleValue: number;
   igv?: number;
   totalAmount: number;
+  isActive: boolean;
 }
