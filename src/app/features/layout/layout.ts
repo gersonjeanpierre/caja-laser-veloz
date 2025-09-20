@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Menubar } from "primeng/menubar";
 import { Panel } from 'primeng/panel';
 import { LogoLaserVeloz } from "@shared/components/logo-laser-veloz/logo-laser-veloz";
 import { MenuItem } from 'primeng/api';
-import { Ripple } from "primeng/ripple";
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-layout',
@@ -15,7 +14,6 @@ import { CommonModule } from '@angular/common';
     Panel,
     LogoLaserVeloz,
     CommonModule,
-    Ripple,
     RouterModule,
     RouterOutlet
   ],

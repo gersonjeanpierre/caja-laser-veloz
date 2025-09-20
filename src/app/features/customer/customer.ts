@@ -12,6 +12,7 @@ import { CrudForm } from '@shared/components/crud-form/crud-form';
 import { Dialog } from "primeng/dialog";
 import { MessageToast } from '@shared/components/message-toast/message-toast';
 import { Validators } from '@angular/forms';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @Component({
   selector: 'app-customer',
@@ -25,7 +26,8 @@ import { Validators } from '@angular/forms';
     InputTextModule,
     CrudForm,
     Dialog,
-    MessageToast
+    MessageToast,
+    ScrollPanelModule
   ],
 })
 export class Customer {
