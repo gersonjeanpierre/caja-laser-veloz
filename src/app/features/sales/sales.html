@@ -34,6 +34,8 @@
             label="Nuevo Ticket"
             icon="pi pi-plus"
             class="p-button-sm"
+            raised="true"
+            rounded="true"
             (click)="createNewTicket()"
           />
           <label class="flex items-center gap-1 text-sm cursor-pointer">
@@ -52,6 +54,7 @@
           <input
             pInputText
             type="text"
+            class="w-80"
             [value]="this.globalFilterValue(psales)"
             (input)="psales.filterGlobal($event.target.value, 'contains')"
             placeholder="Buscar ticket..."
@@ -98,11 +101,12 @@
         <td>{{ sale.totalAmount | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
         <td>
           <div class="flex flex-col">
-            <div>{{ sale.phone }}</div>
+            <!-- <div>{{ sale.phone }}</div> -->
             <p-button
               label="Copiar"
               icon="pi pi-whatsapp"
               size="small"
+              raised="true"
               rounded="true"
               severity="success"
               (click)="copyPhoneToClipboard(sale.phone)"
@@ -131,12 +135,20 @@
             }
           </div>
         </td>
-        <td>{{ sale.createdAt | date: 'short' }}</td>
+        <td>
+          <div>
+            {{ sale.createdAt | date: 'dd/MM/yyyy' }}
+          </div>
+          <div>
+            {{ sale.createdAt | date: 'HH:mm' }}
+          </div>
+        </td>
         <td>
           <p-button
             icon="pi pi-pencil"
             class="mr-2"
             rounded="true"
+            raised="true"
             (click)="editTicket(sale)"
           ></p-button>
           <p-button
@@ -144,6 +156,7 @@
             class=""
             rounded="true"
             severity="danger"
+            raised="true"
             (click)="deleteTicket(sale)"
           ></p-button>
         </td>
@@ -155,6 +168,7 @@
     [(visible)]="ticketDialog"
     [modal]="true"
     [style]="{ width: '800px' }"
+    maskStyleClass="backdrop-blur-sm"
   >
     <crud-form
       [form]="ticketForm"
@@ -168,15 +182,28 @@
   </p-dialog>
 </div>
 <p-dialog
-  header="Buscar o Agregar Cliente"
   [(visible)]="customerDialog"
   [modal]="true"
-  [style]="{ width: '1250px', height: '600px' }"
+  draggable="false"
+  [style]="{ width: '1250px', height: '700px' }"
 >
-  <app-customer
-    [showSelectButton]="true"
-    (customerSelected)="onCustomerSelected($event)"
-    (addNewCustomer)="openAddCustomerDialog()"
-  ></app-customer>
+  <ng-template #headless>
+    <div class="flex justify-end pr-3 pt-3">
+      <p-button
+        rounded="true"
+        (click)="customerDialog = false"
+        icon="pi pi-times"
+        outlined="true"
+        raised="true"
+      />
+    </div>
+    <div class="w-full h-full overflow-auto p-2">
+      <app-customer
+        [showSelectButton]="true"
+        (customerSelected)="onCustomerSelected($event)"
+        (addNewCustomer)="openAddCustomerDialog()"
+      ></app-customer>
+    </div>
+  </ng-template>
 </p-dialog>
 <app-message-toast #toast></app-message-toast>

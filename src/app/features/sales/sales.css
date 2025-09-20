@@ -12,3 +12,7 @@
   color: #990000 !important;
   /* Color de texto rojo oscuro */
 }
+
+:host ::ng-deep .p-dialog {
+  border: none !important;
+}

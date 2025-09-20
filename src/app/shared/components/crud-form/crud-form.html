@@ -14,8 +14,21 @@
   </div>
 
   <div class="flex gap-2 mt-4">
-    <p-button label="Cancelar" icon="pi pi-times" text (click)="cancel.emit()" />
-    <p-button label="Guardar" icon="pi pi-check" (click)="save.emit()" />
+    <p-button
+      label="Cancelar"
+      icon="pi pi-times"
+      rounded="true"
+      raised="true"
+      text
+      (click)="cancel.emit()"
+    />
+    <p-button
+      label="Guardar"
+      icon="pi pi-check"
+      rounded="true"
+      raised="true"
+      (click)="save.emit()"
+    />
   </div>
 
   <!-- Template para renderizar cada field -->
