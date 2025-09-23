@@ -5,7 +5,7 @@
 <div class="mt-5 mx-4">
   <p-table
     #psales
-    [value]="sales"
+    [value]="sales()"
     [globalFilterFields]="[
       'correlative',
       'designerName',
@@ -20,7 +20,7 @@
     ]"
     size="small"
     selectionMode="single"
-    [loading]="loading"
+    [loading]="loading()"
     dataKey="id"
     [rowsPerPageOptions]="[5, 10, 20]"
     [rows]="5"
@@ -41,7 +41,7 @@
           <label class="flex items-center gap-1 text-sm cursor-pointer">
             <input
               type="checkbox"
-              [checked]="showAllSales"
+              [checked]="showAllSales()"
               (change)="onShowAllSalesChange($event)"
             />
             Mostrar todos
@@ -96,9 +96,9 @@
             }
           }
         </td>
-        <td>{{ sale.advancePayment | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
-        <td>{{ sale.saleValue | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
-        <td>{{ sale.totalAmount | currency: 'S/.' : 'symbol' : '1.2-2' }}</td>
+        <td>{{ sale.advancePayment | currency: 'S/. ' : 'symbol' : '1.2-2' : 'en-US' }}</td>
+        <td>{{ sale.saleValue | currency: 'S/. ' : 'symbol' : '1.2-2' : 'en-US' }}</td>
+        <td>{{ sale.totalAmount | currency: 'S/. ' : 'symbol' : '1.2-2' : 'en-US' }}</td>
         <td>
           <div class="flex flex-col">
             <!-- <div>{{ sale.phone }}</div> -->
@@ -191,7 +191,7 @@
     <div class="flex justify-end pr-3 pt-3">
       <p-button
         rounded="true"
-        (click)="customerDialog = false"
+        (click)="customerDialog.set(false)"
         icon="pi pi-times"
         outlined="true"
         raised="true"

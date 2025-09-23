@@ -46,16 +46,21 @@ export class Sales {
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
-  sales: SaleModel[] = [];
-  loading: boolean = true;
-  ticketDialog: boolean = false;
   designers = signal<Designer[]>([]);
   selectDesigners: ISelectPrimeNG[] = [];
   paymentMethods = paymentMethods;
   productStatusOptions = productStatusOptions;
   saleStatusOptions = saleStatusOptions;
-  showCustomerSelector: boolean = false;
 
+  ticketDialog = signal(false);
+  customerDialog = signal(false);
+  addCustomerDialog = signal(false);
+  loading = signal(true);
+  showAllSales = signal(false);
+
+  sales = signal<SaleModel[]>([]);
+  allSales = signal<SaleModel[]>([]);
+  selectedCustomer = signal<CustomerModel | null>(null);
 
   ticketForm: FormGroup = this.fb.group({
     id: '',
@@ -93,38 +98,36 @@ export class Sales {
   }
 
   async loadSales() {
-    this.loading = true;
+    this.loading.set(true);
     try {
-      this.allSales = await this.salesService.getSales();
+      this.allSales.set(await this.salesService.getSales());
       this.filterSales();
       this.cdr.detectChanges();
     } catch (error) {
       console.error('Error loading sales:', error);
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 
   filterSales() {
-    if (this.showAllSales) {
-      this.sales = this.allSales;
+    if (this.showAllSales()) {
+      this.sales.set(this.allSales());
     } else {
-      this.sales = this.allSales.filter(sale => sale.isActive !== false);
+      this.sales.set(this.allSales().filter(sale => sale.isActive !== false));
     }
   }
 
   onShowAllSalesChange(event: any) {
-    this.showAllSales = event.target.checked;
+    this.showAllSales.set(event.target.checked);
     this.filterSales();
   }
 
-  showAllSales: boolean = false;
-  allSales: SaleModel[] = [];
-
   createNewTicket() {
     this.ticketForm.reset();
-    this.ticketDialog = true;
+    this.ticketDialog.set(true);
     this.openCustomerDialog();
+    this.cdr.detectChanges();
   }
 
   saveClient() {
@@ -162,7 +165,7 @@ export class Sales {
 
   editTicket(sale: SaleModel) {
     this.ticketForm.patchValue(sale);
-    this.ticketDialog = true;
+    this.ticketDialog.set(true);
   }
 
   deleteTicket(sale: SaleModel) {
@@ -213,26 +216,24 @@ export class Sales {
   }
 
   hideDialog() {
-    this.ticketDialog = false;
+    this.ticketDialog.set(false);
   }
 
-  customerDialog = false;
-  selectedCustomer: CustomerModel | null = null;
 
   openCustomerDialog() {
-    this.customerDialog = true;
+    this.customerDialog.set(true);
   }
 
   onCustomerSelected(customer: CustomerModel) {
-    this.selectedCustomer = customer;
+    this.selectedCustomer.set(customer);
     this.ticketForm.patchValue({ customerId: customer.id, phone: customer.phone });
-    this.customerDialog = false;
+    this.customerDialog.set(false);
   }
 
-  addCustomerDialog = false;
+
 
   openAddCustomerDialog() {
-    this.addCustomerDialog = true;
+    this.addCustomerDialog.set(true);
   }
 
   openWhatsApp(phone: string) {
