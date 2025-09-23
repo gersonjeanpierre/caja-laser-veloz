@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Sale } from '@core/models/sale.model';
+import { SaleModel } from '@core/models/sale.model';
 import { DexieService } from '@shared/idb-dexiejs/dexie-service';
 import { v7 as uuidv7 } from 'uuid';
 
@@ -8,8 +8,9 @@ import { v7 as uuidv7 } from 'uuid';
 })
 export class SalesService {
   private saleService = inject(DexieService).sales;
+  private paymentsService = inject(DexieService).payments;
 
-  createNewTicket(sale: Sale) {
+  createNewTicket(sale: SaleModel) {
     const saleWithId = {
       ...sale,
       id: uuidv7()
@@ -26,7 +27,7 @@ export class SalesService {
     return this.saleService.get(id);
   }
 
-  updateSale(id: string, changes: Partial<Sale>) {
+  updateSale(id: string, changes: Partial<SaleModel>) {
     return this.saleService.update(id, changes);
   }
 } 

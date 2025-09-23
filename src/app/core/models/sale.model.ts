@@ -1,4 +1,4 @@
-export interface Sale {
+export interface SaleModel {
   id?: string;
   correlative: number;
   standId: string;

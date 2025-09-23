@@ -1,4 +1,4 @@
-export interface ICashier {
+export interface CashierModel {
   id?: string; // UUID
   fullName: string;
   standId: string;

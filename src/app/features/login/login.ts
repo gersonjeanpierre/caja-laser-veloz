@@ -7,7 +7,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SelectStandService } from './select-stand-service';
-import { ICashier } from '@core/models';
+import { CashierModel } from '@core/models';
 import { CashierService } from '../cashier/services/cashier-service';
 import { LogoLaserVeloz } from '@shared/components/logo-laser-veloz/logo-laser-veloz';
 
@@ -37,7 +37,7 @@ export class Login implements OnInit {
   groupedGalleries: any[] = [];
   selectedStand: string | undefined;
   cashiersFullNameList: string[] = [];
-  cashiersList: ICashier[] = [];
+  cashiersList: CashierModel[] = [];
 
   isListCashiers = false;
   addCashier = false;
@@ -64,7 +64,7 @@ export class Login implements OnInit {
       if (!formValue.standId || !formValue.fullName) {
         return;
       }
-      const newCashier: ICashier = {
+      const newCashier: CashierModel = {
         id: '', // Se asigna en el servicio
         fullName: formValue.fullName!,
         standId: formValue.standId!

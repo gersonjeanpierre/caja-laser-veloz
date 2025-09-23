@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Gallery, Stand, ICashier, CashierCut, Sale, Designer, Customer, PaymentModel } from '@core/models/index';
+import { Gallery, Stand, CashierModel, CashierCut, SaleModel, Designer, Customer, PaymentModel } from '@core/models/index';
 import Dexie, { EntityTable } from 'dexie';
 import { galleriesSeed } from './seeds/galleries.seed';
 import { standsSeed } from './seeds/stands.seed';
@@ -11,8 +11,8 @@ import { designersSeed } from './seeds/designers.seed';
 export class DexieService extends Dexie {
   galleries!: EntityTable<Gallery, 'id'>;
   stands!: EntityTable<Stand, 'id'>;
-  cashier!: EntityTable<ICashier, 'id'>;
-  sales!: EntityTable<Sale, 'id'>;
+  cashier!: EntityTable<CashierModel, 'id'>;
+  sales!: EntityTable<SaleModel, 'id'>;
   cashierCuts!: EntityTable<CashierCut, 'id'>;
   designers!: EntityTable<Designer, 'id'>;
   customers!: EntityTable<Customer, 'id'>;

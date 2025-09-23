@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, signal, ViewChild } from '@angular/core';
-import { ICashier, Sale } from '@core/models';
+import { CashierModel, SaleModel } from '@core/models';
 import { SalesService } from './services/sales-service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -46,7 +46,7 @@ export class Sales {
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
-  sales: Sale[] = [];
+  sales: SaleModel[] = [];
   loading: boolean = true;
   ticketDialog: boolean = false;
   designers = signal<Designer[]>([]);
@@ -119,7 +119,7 @@ export class Sales {
   }
 
   showAllSales: boolean = false;
-  allSales: Sale[] = [];
+  allSales: SaleModel[] = [];
 
   createNewTicket() {
     this.ticketForm.reset();
@@ -128,8 +128,8 @@ export class Sales {
   }
 
   saveClient() {
-    const ticket: Sale = this.ticketForm.value;
-    const cashier: ICashier = JSON.parse(localStorage.getItem('selectedCashier') || '{}');
+    const ticket: SaleModel = this.ticketForm.value;
+    const cashier: CashierModel = JSON.parse(localStorage.getItem('selectedCashier') || '{}');
     ticket.cashierId = cashier.id || '';
     ticket.standId = cashier.standId || '';
     ticket.designerName = this.designers().find(d => d.id === ticket.designerId)?.name || '';
@@ -160,12 +160,12 @@ export class Sales {
     this.hideDialog();
   }
 
-  editTicket(sale: Sale) {
+  editTicket(sale: SaleModel) {
     this.ticketForm.patchValue(sale);
     this.ticketDialog = true;
   }
 
-  deleteTicket(sale: Sale) {
+  deleteTicket(sale: SaleModel) {
     // implementar el delete logico
     sale.isActive = false;
     this.salesService.updateSale(sale.id || '', sale)
